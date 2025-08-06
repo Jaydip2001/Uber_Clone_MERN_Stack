@@ -1,0 +1,20 @@
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODkzYjQyYjU2MzM0NGJjYzIwYzlkZGMiLCJpYXQiOjE3NTQ1MTAzNzksImV4cCI6MTc1NDU5Njc3OX0.geFWviqhv785ZSz4qeLqd_ewXWxOZu6C_EhSJFBxGBE",
+    "captain": {
+        "fullName": {
+            "firstName": "text_captain_firstname",
+            "lastName": "test_captain_lastname"
+        },
+        "email": "test_email@gmail.com",
+        "password": "$2b$10$6wwNGThlVZdeBlV9fUKxTOEqQE4VY3rGhvM1UU6VDkZOIPAk8/Rq2",
+        "status": "inactive",
+        "vehicle": {
+            "color": "red",
+            "plate": "GJ 24 XX 6699",
+            "capacity": 3,
+            "vehicleType": "car"
+        },
+        "_id": "6893b42b563344bcc20c9ddc",
+        "__v": 0
+    }
+}
