@@ -6,14 +6,14 @@ import { Link } from "react-router-dom";
 function UserLogin() {
   const [email, emailfirst] = useState("");
   const [password, setPassword] = useState("");
-  const [userData, setuserData] = useState({});
+  const [userData, setusetData] = useState({});
 
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add login logic here
 
-   setuserData({
+   setusetData({
       email: email,
       password: password,
     });
