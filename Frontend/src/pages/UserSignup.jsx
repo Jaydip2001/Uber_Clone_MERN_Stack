@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-// import { UserDataContext } from '../context/UserContext'
+import { UserDataContext } from '../context/UserContext'
+
 
 
 
@@ -10,44 +11,53 @@ const UserSignup = () => {
   const [ password, setPassword ] = useState('')
   const [ firstName, setFirstName ] = useState('')
   const [ lastName, setLastName ] = useState('')
-  // const [ userData, setUserData ] = useState({})
+  const [ userData, setUserData ] = useState({})
 
   const navigate = useNavigate()
 
 
 
-  // const {  setUser } = useContext(UserDataContext)
+  const { user, setUser } = useContext(UserDataContext)
 
 
 
+const submitHandler = async (e) => {
+  e.preventDefault();
 
-  const submitHandler = async (e) => {
-    e.preventDefault()
-    const newUser = {
-      fullname: {
-        firstname: firstName,
-        lastname: lastName
-      },
-      email: email,
-      password: password
-    }
+  const newUser = {
+    fullName: { // match backend exactly
+      firstName: firstName,
+      lastName: lastName
+    },
+    email: email,
+    password: password
+  };
 
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/register`,
+      newUser,
+      { headers: { "Content-Type": "application/json" } }
+    );
 
     if (response.status === 201) {
-      const data = response.data
-      // setUser(data.user)
-      localStorage.setItem('token', data.token)
-      navigate('/home')
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem('token', data.token);
+      navigate('/home');
     }
 
-
-    setEmail('')
-    setFirstName('')
-    setLastName('')
-    setPassword('')
-
+    setEmail('');
+    setFirstName('');
+    setLastName('');
+    setPassword('');
+    
+  } catch (error) {
+    console.error(error.response?.data);
+    alert(error.response?.data?.error?.[0]?.msg || "Signup failed");
   }
+};
+
   return (
     <div>
       <div className='p-7 h-screen flex flex-col justify-between'>
