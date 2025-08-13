@@ -1,91 +1,90 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { CaptainDataContext } from '../context/CapatainContext'
 
-// UserLogin component for user login functionality
+const Captainlogin = () => {
 
-function CaptainLogin() {
-  const [email, emailfirst] = useState("");
-  const [password, setPassword] = useState("");
-  const [CaptainData, setuCapatain] = useState({});
+  const [ email, setEmail ] = useState('')
+  const [ password, setPassword ] = useState('')
 
-  // Function to handle form submission
-  const handleSubmit = (e) => {
+  const { captain, setCaptain } = React.useContext(CaptainDataContext)
+  const navigate = useNavigate()
+
+
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    // Add login logic here
-
-    setuCapatain ({
+    const captain = {
       email: email,
-      password: password,
-    });
-    console.log(CaptainData);
-    setPassword("");
-    emailfirst(""); 
-  };
+      password
+    }
 
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain)
+
+    if (response.status === 200) {
+      const data = response.data
+
+      setCaptain(data.captain)
+      localStorage.setItem('token', data.token)
+      navigate('/captain-home')
+
+    }
+
+    setEmail('')
+    setPassword('')
+  }
   return (
-    <div className="p-7 flex flex-col  justify-between h-screen bg-gray-100">
-      <div className="">
-        <img
+    <div className='p-7 h-screen flex flex-col justify-between'>
+      <div>
+       <img
           className="w-16 mb-10"
           src="https://static.vecteezy.com/system/resources/previews/027/127/594/non_2x/uber-logo-uber-icon-transparent-free-png.png"
           alt=""
         />
-        <form
-          onSubmit={(e) => {
-            handleSubmit(e);
-          }}
-          action=""
-        >
-          <h3 className="text-xl mb-2">What is Your Email Number</h3>
+        <form onSubmit={(e) => {
+          submitHandler(e)
+        }}>
+          <h3 className='text-lg font-medium mb-2'>What's your email</h3>
           <input
             required
             value={email}
-            onChange={(e) => emailfirst(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value)
+            }}
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
             type="email"
-            name=""
-            id=""
-            placeholder="email@example.com"
-            className="mb-4 p-2 border border-gray-300 rounded w-full"
+            placeholder='email@example.com'
           />
-          <h3 className=" text-xl mb-2 ">Enter password</h3>
+
+          <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
+
           <input
-            required
+            className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            name=""
-            id=""
-            placeholder="********"
-            className="mb-4 p-2 border border-gray-300 rounded w-full"
+            onChange={(e) => {
+              setPassword(e.target.value)
+            }}
+            required type="password"
+            placeholder='password'
           />
+
           <button
-            className="mb-4 p-2 bg-black text-white text-xl  border border-gray-300 rounded w-full"
-            type="submit"
-          >
-            Login
-          </button>
-          <div className="text-center">
-            <p className="text-gray-500">
-              Don't have an account?{" "}
-              <Link to="/captain-signup" className="text-blue-500">
-                {" "}
-               Captain Sign-Up{" "}
-              </Link>{" "}
-            </p>
-          </div>
+            className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+          >Login</button>
+
         </form>
+        <p className='text-center'>Join a fleet? <Link to='/captain-signup' className='text-blue-600'>Register as a Captain</Link></p>
       </div>
-      <div className="">
+      <div>
         <Link
-        to={"/login"}
-          className="mb-5 p-2 bg-[#fab92d] flex items-center justify-center text-black text-lg font-semibold border border-gray-300 rounded w-full"
-          type="submit"
-        >
-          Sign in As User{" "}
-        </Link>
+          to='/login'
+          className='bg-[#d5622d] flex items-center justify-center text-white font-semibold mb-5 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
+        >Sign in as User</Link>
       </div>
     </div>
-  );
+  )
 }
 
-export default CaptainLogin;
+export default Captainlogin

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-// import { CaptainDataContext } from '../context/CapatainContext'
+import { CaptainDataContext } from '../context/CapatainContext'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
@@ -19,31 +19,32 @@ const CaptainSignup = () => {
   const [ vehicleType, setVehicleType ] = useState('')
 
 
-  // const { captain, setCaptain } = React.useContext(CaptainDataContext)
+  const { captain, setCaptain } = React.useContext(CaptainDataContext)
 
 
   const submitHandler = async (e) => {
     e.preventDefault()
-    const captainData = {
-      fullname: {
-        firstname: firstName,
-        lastname: lastName
-      },
-      email: email,
-      password: password,
-      vehicle: {
-        color: vehicleColor,
-        plate: vehiclePlate,
-        capacity: vehicleCapacity,
-        vehicleType: vehicleType
-      }
-    }
+  const captainData = {
+  fullName: {
+    firstName: firstName.trim(),
+    lastName: lastName.trim()
+  },
+  email: email.trim(),
+  password: password,
+  vehicle: {
+    color: vehicleColor.trim(),
+    plate: vehiclePlate.trim(),
+    capacity: Number(vehicleCapacity), // convert to number
+    vehicleType: vehicleType // must match backend enum
+  }
+}
+
 
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData)
 
     if (response.status === 201) {
       const data = response.data
-      // setCaptain(data.captain)
+      setCaptain(data.captain)
       localStorage.setItem('token', data.token)
       navigate('/captain-home')
     }
@@ -61,7 +62,11 @@ const CaptainSignup = () => {
   return (
     <div className='py-5 px-5 h-screen flex flex-col justify-between'>
       <div>
-        <img className='w-20 mb-3' src="https://static.vecteezy.com/system/resources/previews/027/127/594/non_2x/uber-logo-uber-icon-transparent-free-png.png" alt="" />
+ <img
+          className="w-16 mb-10"
+          src="https://static.vecteezy.com/system/resources/previews/027/127/594/non_2x/uber-logo-uber-icon-transparent-free-png.png"
+          alt=""
+        />
 
         <form onSubmit={(e) => {
           submitHandler(e)
@@ -149,19 +154,17 @@ const CaptainSignup = () => {
                 setVehicleCapacity(e.target.value)
               }}
             />
-            <select
-              required
-              className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border text-lg placeholder:text-base'
-              value={vehicleType}
-              onChange={(e) => {
-                setVehicleType(e.target.value)
-              }}
-            >
-              <option value="" disabled>Select Vehicle Type</option>
-              <option value="car">Car</option>
-              <option value="auto">Auto</option>
-              <option value="moto">Moto</option>
-            </select>
+       <select
+  required
+  value={vehicleType}
+  onChange={(e) => setVehicleType(e.target.value)}
+>
+  <option value="" disabled>Select Vehicle Type</option>
+  <option value="car">Car</option>
+  <option value="auto">Auto</option>
+  <option value="motorcycle">Motorcycle</option> {/* ✅ correct */}
+</select>
+
           </div>
 
           <button
