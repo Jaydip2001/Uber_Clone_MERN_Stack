@@ -11,6 +11,9 @@ function Home() {
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null)
+  const [vehiclepanel, setvehiclepanel] = useState('')
+  
+  const vehiclepanelRef = useRef(null)
   const submitHandler = (e) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -44,6 +47,18 @@ function Home() {
       });
     }
   }, [panelOpen]);
+
+  useGSAP(function() {
+  if (vehiclepanel) {
+    gsap.to(vehiclepanelRef.current,{
+transform: "translateY(0)",
+    })
+  }else{
+    gsap.to(vehiclepanelRef.current,{
+      transform: "translateY(100%)",
+    })
+  }
+  }, [vehiclepanel]);
 
   return (
     <div className="h-screen relative overflow-hidden">
@@ -87,16 +102,16 @@ function Home() {
           </form>
         </div>
         <div ref={panelRef} className="bg-white h-0">
-          <LocationSearchPanel/>
+          <LocationSearchPanel vehiclepanel={vehiclepanel} setvehiclepanel={setvehiclepanel}/>
         </div>
       </div>
-<div className="fixed z-10 bottom-0 left-0 w-full bg-white p-4 shadow-2xl rounded-t-2xl">
+<div ref={vehiclepanelRef} className="fixed z-10 bottom-0 translate-y-full left-0 w-full bg-white p-4 shadow-2xl rounded-t-2xl">
   <h3 className="text-2xl font-semibold mb-3">Choose a Vehicle</h3>
   
   {/* Container for multiple rides */}
 <div className="space-y-3 max-h-60 overflow-y-auto">
   {/* Ride Card */}
-  <div className="flex items-center border-2 rounded-xl bg-gray-100 active:border-black justify-between p-2">
+  <div className="flex  border-2  active:border-black bg-gray-100 rounded-xl  items-center justify-between p-2">
     <img
       className="h-16 w-16 object-contain"
       src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_552,w_552/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png"
@@ -113,7 +128,7 @@ function Home() {
   </div>
 
   {/* Another Ride Card */}
-  <div className="flex items-center border-2 rounded-xl bg-gray-100 active:border-black justify-between p-2">
+  <div className="flex  border-2  active:border-black bg-gray-100 rounded-xl  items-center justify-between p-2">
     <img
       className="h-16 w-16 object-contain"
       src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_552,w_552/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png"
