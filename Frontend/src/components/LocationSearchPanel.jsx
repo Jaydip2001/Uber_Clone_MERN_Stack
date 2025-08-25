@@ -45,10 +45,10 @@ const LocationSearchPanel=(props) =>{
 
       <div className="gap-5 flex  flex-col">
        {
-           Locations.map(function(elem){
+           Locations.map(function(elem, idx){
                return (
-                   <div onClick={()=>{
-                    props.setvehiclepanel(true)
+                   <div key={idx} onClick={()=>{
+                    props.setvehiclePanelOpen(true)
                     props.setPanelOpen(false)
 
                    }} className="flex items-center border-gray-100 border-2  active:border-black rounded-xl p-3 justify-start pl-5">

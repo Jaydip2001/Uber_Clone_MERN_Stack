@@ -11,7 +11,7 @@ function Home() {
   const [panelOpen, setPanelOpen] = useState(false);
   const panelRef = useRef(null);
   const panelCloseRef = useRef(null)
-  const [vehiclepanel, setvehiclepanel] = useState('')
+  const [vehiclePanelOpen, setvehiclePanelOpen] = useState('')
   
   const vehiclepanelRef = useRef(null)
   const submitHandler = (e) => {
@@ -49,7 +49,7 @@ function Home() {
   }, [panelOpen]);
 
   useGSAP(function() {
-  if (vehiclepanel) {
+  if (vehiclePanelOpen) {
     gsap.to(vehiclepanelRef.current,{
 transform: "translateY(0)",
     })
@@ -58,7 +58,7 @@ transform: "translateY(0)",
       transform: "translateY(100%)",
     })
   }
-  }, [vehiclepanel]);
+  }, [vehiclePanelOpen]);
 
   return (
     <div className="h-screen relative overflow-hidden">
@@ -102,54 +102,14 @@ transform: "translateY(0)",
           </form>
         </div>
         <div ref={panelRef} className="bg-white h-0">
-          <LocationSearchPanel vehiclepanel={vehiclepanel} setvehiclepanel={setvehiclepanel}/>
+          <LocationSearchPanel  setPanelOpen={setPanelOpen}  setvehiclepanel={setvehiclePanelOpen}/>
         </div>
       </div>
-<div ref={vehiclepanelRef} className="fixed z-10 bottom-0 translate-y-full left-0 w-full bg-white p-4 shadow-2xl rounded-t-2xl">
-  <h3 className="text-2xl font-semibold mb-3">Choose a Vehicle</h3>
-  
-  {/* Container for multiple rides */}
-<div className="space-y-3 max-h-60 overflow-y-auto">
-  {/* Ride Card */}
-  <div className="flex  border-2  active:border-black bg-gray-100 rounded-xl  items-center justify-between p-2">
-    <img
-      className="h-16 w-16 object-contain"
-      src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_552,w_552/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png"
-      alt="Uber Car"
-    />
-    <div className="ml-3 flex-1">
-      <h4 className="text-lg font-semibold flex items-center">
-        UberGo <span className="ml-1 text-gray-600"><i className="ri-user-3-fill">4</i></span>
-      </h4>
-      <h5 className="text-sm text-green-600 font-medium">3 min away</h5>
-      <p className="text-xs text-gray-500">Affordable rides</p>
+      <div ref={vehiclepanelRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14'>
+        <VehiclePanel setVehiclePanel={setvehiclePanelOpen}  />
+        </div> 
     </div>
-    <h2 className="text-xl font-bold text-gray-800">₹150</h2>
-  </div>
 
-  {/* Another Ride Card */}
-  <div className="flex  border-2  active:border-black bg-gray-100 rounded-xl  items-center justify-between p-2">
-    <img
-      className="h-16 w-16 object-contain"
-      src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_552,w_552/v1555367310/assets/30/51e602-10bb-4e65-b122-e394d80a9c47/original/Final_UberX.png"
-      alt="Uber Car"
-    />
-    <div className="ml-3 flex-1">
-      <h4 className="text-lg font-semibold flex items-center">
-        UberXL <span className="ml-1 text-gray-600"><i className="ri-user-3-fill">6</i></span>
-      </h4>
-      <h5 className="text-sm text-green-600 font-medium">5 min away</h5>
-      <p className="text-xs text-gray-500">Spacious rides</p>
-    </div>
-    <h2 className="text-xl font-bold text-gray-800">₹250</h2>
-  </div>
-
-  {/* Add more rides here */}
-</div>
-
-</div>
-
-    </div>
   );
 }
 
